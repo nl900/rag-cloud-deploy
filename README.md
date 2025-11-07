@@ -18,12 +18,12 @@ The app can also be run in a local Kubernetes cluster using kind
 
 Create kind cluster
 ```bash
-kind create cluster --name rag-dev
+kind create cluster --name <cluster-name>
 ```
 
 Load the image to the kind cluster
 ```bash
-kind load docker-image rag-app:latest --name rag-dev
+kind load docker-image rag-app:latest --name <cluster-name>
 ```
 
 Apply Kubernetes manifests
