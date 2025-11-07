@@ -11,3 +11,6 @@ spec:
           env:
             - name: ENV
               value: "dev"
+          image: rag-app:latest
+          # Use the local Docker image for kind cluster; prevents Kubernetes from trying to pull from a registry
+          imagePullPolicy: Never
