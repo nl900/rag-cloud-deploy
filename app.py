@@ -1,4 +1,5 @@
 import os
+import sys
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import logging
@@ -7,9 +8,15 @@ import logging
 # from neo4j import GraphDatabase
 # import openai
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
 app = FastAPI()
 logger = logging.getLogger(__name__)
-
+app = FastAPI(title="RAG Service", version="1.0.0")
 
 class Query(BaseModel):
     question: str
@@ -27,6 +34,7 @@ class Config:
 @app.get("/health")
 async def health_check():
     # In production, would check Neo4j and OpenAI connectivity
+    logger.info("Health check.")
     return {"status": "healthy", "version": "1.0.0"}
 
 
@@ -49,7 +57,7 @@ async def query_rag(query: Query):
             "confidence": 0.85
         }
     except Exception as e:
-        logger.error(f"Query failed: {str(e)}")
+        logger.exception(f"Query failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Query processing failed")
 
 
