@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-config
+data:
+  NEO4J_URI: "bolt://neo4j-dev:7687"
+  PORT: "8000"

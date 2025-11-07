@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-app
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: rag-app
+          env:
+            - name: ENV
+              value: "dev"

@@ -1,0 +1,9 @@
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: rag-app
+          env:
+            - name: ENV
+              value: "staging"
