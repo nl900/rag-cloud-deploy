@@ -34,7 +34,6 @@ class Config:
 @app.get("/health")
 async def health_check():
     # In production, would check Neo4j and OpenAI connectivity
-    logger.info("Health check.")
     return {"status": "healthy", "version": "1.0.0"}
 
 
