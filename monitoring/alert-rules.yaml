@@ -1,0 +1,10 @@
+groups:
+  - name: rag-alerts
+    rules:
+      - alert: HighErrorRate
+        expr: rate(rag_queries_total[5m]) < 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAG service query rate dropped below 1 qps"
