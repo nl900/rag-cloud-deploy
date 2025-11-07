@@ -4,24 +4,19 @@
 
 ### Container
 Chose Python 3.12-slim image because this is a Python-specific base image ensuring all standard Python libraries and 
-tools are provided out of the box.
+tools are provided out of the box. <br>
 While smaller Python-specific images like python:3.12-alpine could work for the sample app, a full RAG application would 
-require additional ML dependencies that may not be compatible with it.
+require additional ML dependencies that may not be compatible with it. <br>
 Multi-stage docker build is employed to create a final minimal image for production.
 
 ### Secrets and Config Management
-The application reads neo4j and openai connection configuration from environment variables.
-To avoid hardcoding the sensitive information
-    Local: use .env file and the file is passed through when running the docker
-    Local with local Kubernetes cluster: uses the secret.yaml file to define the credentials 
-    Staging and production: the secrets are managed using managed secret provider eg aws secret store and injected into Kubernetes
-        via the envFrom
+The application reads neo4j and openai connection configuration from environment variables. <br>
+To avoid hardcoding the sensitive information <br>
+    &nbsp;&nbsp;&nbsp; Local: use .env file and the file is passed through when running the docker <br>
+    &nbsp;&nbsp;&nbsp; Local with local Kubernetes cluster: uses the secret.yaml file to define the credentials <br>
+    &nbsp;&nbsp;&nbsp; Staging and production: the secrets are managed using managed secret provider eg aws secret store and injected into Kubernetes
+        via the envFrom <br>
 URI and port are not considered as sensitive and is passed in Kubernetes ConfigMap
-
-### Resource management
-Defining CPU and memory requests and limits in deployment manifests adds complexity but ensures that pods are scheduled 
-efficiently, prevents a single pod from consuming all node resources, and helps the application scale safely while 
-maintaining high availability.
 
 ### Deployment strategy
 
@@ -34,8 +29,6 @@ The app already exposes Prometheus style metrics via the /metrics endpoint, so n
 to scrape this endpoint and make it available for dashboards eg Grafana and use to setup appropriate alerts.
 
 ## Assumptions
-- No sensitive data
-- Secrets are available and injected at runtime
 - The /query endpoint represents what a real RAG system would expose
 
 
