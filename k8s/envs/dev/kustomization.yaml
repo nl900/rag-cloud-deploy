@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../common
+  - secret.yaml
 
 namePrefix: dev-
 

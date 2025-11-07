@@ -8,6 +8,9 @@ spec:
     spec:
       containers:
         - name: rag-app
+          envFrom:
+            - secretRef:
+                name: rag-secrets
           env:
             - name: ENV
               value: "dev"
