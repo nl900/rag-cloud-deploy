@@ -3,10 +3,11 @@ kind: Kustomization
 
 resources:
   - ../../common
+  - secret.yaml
 
 namePrefix: dev-
 
 patchesStrategicMerge:
   - deployment-patch.yaml
   - configmap-patch.yaml
-  - secret.yaml
+
