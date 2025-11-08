@@ -53,12 +53,13 @@ to scrape this endpoint. Send
 
 ## Improvements
 - Error handling and retry logic for external service integrations (openai and neo4j)
-- Separate requirements.txt instead of docker inline installs
 - Have a shared Secret Kubernetes manifest for different environments
+- Secret rotations, container image scanning to enhance security
 - Deployment via CI/CD for different environments
 - Canary deployment for prod environment
-- Structured JSON logging to integrate with a centralized log collector.
-- Grafana dashboards to visualize key metrics
+- Restrict unnecessary traffic in Kubernetes network policies
+- Structured JSON logging to integrate with a centralized log collector eg Grafana 
+- Set up Grafana dashboards to visualize key metrics
 - Setup alerts when certain thresholds are passed, integrate with Slack, Pagerduty for incident notiications
 
 ## Cost considerations

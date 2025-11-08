@@ -20,7 +20,8 @@ WORKDIR /app
 
 COPY --from=builder /app /app
 
-RUN pip install --no-cache-dir fastapi uvicorn[standard] pydantic
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 USER appuser
 
