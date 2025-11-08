@@ -22,8 +22,8 @@ The application reads neo4j and openai connection configuration from environment
 To avoid hardcoding the sensitive information <br>
     &nbsp;&nbsp;&nbsp; Local: use .env file and the file is passed through when running the docker <br>
     &nbsp;&nbsp;&nbsp; Local with local Kubernetes cluster: uses the secret.yaml file to define the credentials <br>
-    &nbsp;&nbsp;&nbsp; Staging and production: the secrets are managed using managed secret provider eg aws secret store and injected into Kubernetes
-        via the envFrom <br>
+    &nbsp;&nbsp;&nbsp; Staging and production: the secrets are managed using managed secret provider eg aws secret store 
+and injected into Kubernetes via envFrom <br>
 URI and port are not considered as sensitive and is passed in Kubernetes ConfigMap
 
 ### Deployment strategy
