@@ -1,16 +1,28 @@
-FROM python:3.12-slim
+FROM python:3.12-slim AS builder
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-RUN useradd -m raguser
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential gcc && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY app.py .
+COPY app.py /app/
 
-RUN chown -R raguser:raguser /app
-USER raguser
+FROM python:3.12-slim AS runtime
+
+# non-root user
+RUN useradd -m -u 1001 appuser
+
+WORKDIR /app
+
+COPY --from=builder /app /app
+
+RUN pip install --no-cache-dir fastapi uvicorn[standard] pydantic
+
+USER appuser
 
 EXPOSE 8000
 

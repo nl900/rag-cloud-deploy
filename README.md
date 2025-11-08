@@ -1,13 +1,21 @@
-# RAG App
-
 ## Architectural decisions
 
 ### Container
-Chose Python 3.12-slim image because this is a Python-specific base image ensuring all standard Python libraries and 
-tools are provided out of the box. <br>
-While smaller Python-specific images like python:3.12-alpine could work for the sample app, a full RAG application would 
-require additional ML dependencies that may not be compatible with it. <br>
-Multi-stage docker build is employed to create a final minimal image for production.
+Python 3.12-slim image was chosen because it is smaller but still work out of the box for most Python packages due to the image
+based on Debian and using glibc. As the app import neo4j and openai libraries which require C and Rust extensions, they 
+are better compatible in glibc environment. Whereas an Alpine variant uses musl libc, though smaller less compatible 
+which may cause installation errors or runtime crashes with external dependencies. Further, it is assumed that the app will
+make calls to neo4j and openai  which means it's I/O bound and glibc is more optimised than musl which Alpine uses. Further, 
+since this is run using Kubernetes which is built on Debian/Ubuntu which are glibc based Linux distributions, the Python:slim 
+which is also Debian-based ensures it's most compatible. <br>
+Multi-stage build separate build and run. The necessary tools used to compile and install Python dependencies are downloaded
+then discarded. The final runtime image contain only the app, Python and the bare minimal libraries necessary to run the app,
+keeping the final build image as small as possible, reducing attack surface and more secure. Similarly, cleaning up the
+package manager caches reduce the possbility of leftover sensitive files included in the image. <br>
+Creating a non-root user and assigning a fixed UID ensures compatibility with Kubernetes security policies that may require 
+numeric UIDs. Switching to this non-root user to run all subsequent commands including container entrypoint  ensures
+the app runs without root privileges in case the container is compromised.
+Only exposing port the app requires (8000 for FastAPI) further reduce exposure to unnecessary access.
 
 ### Secrets and Config Management
 The application reads neo4j and openai connection configuration from environment variables. <br>
@@ -30,6 +38,7 @@ to scrape this endpoint and make it available for dashboards eg Grafana and use 
 
 ## Assumptions
 - The /query endpoint represents what a real RAG system would expose
+- The app will query a neo4j 
 
 
 ## Improvements
