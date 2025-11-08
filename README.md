@@ -71,34 +71,16 @@ to scrape this endpoint. Send
 Make sure you are in the project directory containing the `Dockerfile`:
 
 ```bash
-docker build -t rag-app:latest .
-docker run --env-file .env -p 8000:8000 rag-app:latest 
-```
-
-Test endpoint
-```bash
-curl http://localhost:8000/health
+docker build -t rag-app:dev-latest .
+docker run --env-file .env -p 8000:8000 rag-app:dev-latest 
+curl http://localhost:8000/health # test endpoint
 ```
 
 The app can also be run in a local Kubernetes cluster using kind
 
-Create kind cluster
 ```bash
-kind create cluster --name <cluster-name>
-```
-
-Load the image to the kind cluster
-```bash
-kind load docker-image rag-app:latest --name <cluster-name>
-```
-
-Apply Kubernetes manifests
-```bash
-kubectl apply -k k8s/envs/dev/
-```
-
-Ensure the pods are running and check logs
-
-```bash
-kubectl logs <pod-name>
+kind create cluster --name <cluster-name> # create cluster
+kind load docker-image rag-app:dev-latest --name <cluster-name> # load image to cluster
+kubectl apply -k k8s/envs/dev/ # Apply Kubernetes manifests
+kubectl logs <pod-name> # Ensure the pods are running and check logs
 ```
