@@ -1,10 +1,14 @@
-# deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rag-app
 spec:
-  replicas: 1
+  replicas: 1 # default
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: rag-app
@@ -15,7 +19,7 @@ spec:
     spec:
       containers:
         - name: rag-app
-          image: your-registry/rag-app:latest
+          image: registry/rag-app:latest
           ports:
             - containerPort: 8000
           envFrom:
@@ -37,7 +41,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 15
             failureThreshold: 3
-
           readinessProbe:
             httpGet:
               path: /health

@@ -8,12 +8,18 @@ spec:
     spec:
       containers:
         - name: rag-app
+          image: registry/rag-app:dev-latest
+          imagePullPolicy: Never   # use local image
           envFrom:
             - secretRef:
                 name: rag-secrets
           env:
             - name: ENV
               value: "dev"
-          image: rag-app:latest
-          # Use the local Docker image for kind cluster; prevents Kubernetes from trying to pull from a registry
-          imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

@@ -28,7 +28,7 @@ class Config:
     NEO4J_USER = os.getenv("NEO4J_USER")
     NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    PORT = int(os.getenv("PORT"))
+    PORT = int(os.getenv("PORT", "8000"))
 
 
 @app.get("/health")

@@ -4,6 +4,14 @@ spec:
     spec:
       containers:
         - name: rag-app
+          image: registry/rag-app:staging-latest
           env:
             - name: ENV
               value: "staging"
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "600m"
+              memory: "512Mi"

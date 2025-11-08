@@ -27,7 +27,18 @@ To avoid hardcoding the sensitive information <br>
 URI and port are not considered as sensitive and is passed in Kubernetes ConfigMap
 
 ### Deployment strategy
+The default deployment strategy Kubernetes uses is the RollingUpdate. This is simple and fast and acceptable for dev and 
+and testing purposes and suitable for dev and staging environments. However for prod environment, a canary deployment
+is preferred which gradually roll out updates to a small subset of users and slowly expand rollout while monitoring for 
+errors and performance. This minimizes impact of faulty deployment. Kubernetes does not provide a built-in mechanism for canary
+deployment and has not been implemented here.
 
+### Availability
+To ensure high availability by leveraging Kubernetes features:
+- multiple replicas so if a pod fails, others continue to serve requests
+- readiness and liveliness probes to prevent traffic sent to unhealthy pods and automatically restart failing pods
+- Load balance via Kubernetes service to distribute requests evenly across healthy pods
+- Scale pods automatically based on load
 
 ### Logging and observability
 Using Python's built-in logging module, we log all query function calls and all errors using exception to show stack trace.
@@ -38,12 +49,20 @@ to scrape this endpoint and make it available for dashboards eg Grafana and use 
 
 ## Assumptions
 - The /query endpoint represents what a real RAG system would expose
-- The app will query a neo4j 
+- The app runs alongside a Neo4j database and query OpenAI API for text generation
 
 
 ## Improvements
+- Separate requirements.txt instead of docker inline installs
+- Have a shared Secret Kubernetes manifest for different environments
+- Canary deployment for prod environment
 - structured JSON logging to integrate with a centralized log collector.
 - Error handling and retry logic for external service integrations (openai and neo4j)
+- Deployment via CI/CD for different environments
+
+## Estimate costs
+
+
 
 ## Running the RAG App with Docker
 Make sure you are in the project directory containing the `Dockerfile`:

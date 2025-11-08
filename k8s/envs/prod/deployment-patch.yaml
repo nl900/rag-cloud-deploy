@@ -4,6 +4,14 @@ spec:
     spec:
       containers:
         - name: rag-app
+          image: registry/rag-app:prod-latest
           env:
             - name: ENV
               value: "prod"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
