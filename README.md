@@ -61,9 +61,11 @@ to scrape this endpoint. Send
 - Grafana dashboards to visualize key metrics
 - Setup alerts when certain thresholds are passed, integrate with Slack, Pagerduty for incident notiications
 
-## Estimate costs
-
-
+## Cost considerations
+- Keep replicas and resources to minimum
+- Persistent volumes for Neo4j
+- Logs and metrics storage 
+- External access to services incur charges
 
 ## Running the RAG App with Docker
 Make sure you are in the project directory containing the `Dockerfile`:
