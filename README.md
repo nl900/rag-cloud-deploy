@@ -41,11 +41,17 @@ To ensure high availability by leveraging Kubernetes features:
 - Scale pods automatically based on load
 
 ### Logging and observability
-Using Python's built-in logging module, we log all query function calls and all errors using exception to show stack trace.
+Using Python's built-in logging module, we log all query function calls and all errors using exception to show full stack trace.
 Write logs to standard output and error streams of the container since this is deployed on Kubernetes, it can capture the 
-logs automatically. This is simple and no local files are needed inside the container.
+logs automatically. This is simple and no local files are needed inside the container.<br>
+Use structured logs to include contextual information eg request ID and use log levels for better debugging.<br>
 The app already exposes Prometheus style metrics via the /metrics endpoint, so naturally makes sense to use Prometheus 
-to scrape this endpoint. 
+to scrape this endpoint. Key metrics to include: <br>
+    - Total number of queries processed <br>
+    - Query latency <br>
+    - Error count <br>
+Alerts should be set up for high latency or error rates. <br>
+The readiness and livenes probes allow Kubernetes to monitor pod health.
 
 ## Assumptions
 - The /query endpoint represents what a real RAG system would expose
