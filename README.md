@@ -45,7 +45,7 @@ Using Python's built-in logging module, we log all query function calls and all 
 Write logs to standard output and error streams of the container since this is deployed on Kubernetes, it can capture the 
 logs automatically. This is simple and no local files are needed inside the container.
 The app already exposes Prometheus style metrics via the /metrics endpoint, so naturally makes sense to use Prometheus 
-to scrape this endpoint. Send 
+to scrape this endpoint. 
 
 ## Assumptions
 - The /query endpoint represents what a real RAG system would expose
@@ -53,13 +53,15 @@ to scrape this endpoint. Send
 
 ## Improvements
 - Error handling and retry logic for external service integrations (openai and neo4j)
-- Have a shared Secret Kubernetes manifest for different environments
-- Secret rotations, container image scanning to enhance security
+- Have a shared Secret Kubernetes manifest for different environments for consistent releases
+- Implement secret rotations and enable container image scanning to enhance security
 - Deployment via CI/CD for different environments
 - Canary deployment for prod environment
-- Restrict unnecessary traffic in Kubernetes network policies
-- Structured JSON logging to integrate with a centralized log collector eg Grafana 
-- Set up Grafana dashboards to visualize key metrics
+- Restrict unnecessary traffic using Kubernetes network policies
+- Structured JSON logging to integrate with a centralized log collector and easier to query
+- Include contextual information eg IDs to correlate logs with specific requests so it's easier to debug.
+- Setup Grafana dashboards to visualize key metrics
+- Implement tracing of requests to help identify bottlenecks.
 - Setup alerts when certain thresholds are passed, integrate with Slack, Pagerduty for incident notiications
 
 ## Cost considerations
