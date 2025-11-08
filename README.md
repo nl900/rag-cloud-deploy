@@ -45,20 +45,21 @@ Using Python's built-in logging module, we log all query function calls and all 
 Write logs to standard output and error streams of the container since this is deployed on Kubernetes, it can capture the 
 logs automatically. This is simple and no local files are needed inside the container.
 The app already exposes Prometheus style metrics via the /metrics endpoint, so naturally makes sense to use Prometheus 
-to scrape this endpoint and make it available for dashboards eg Grafana and use to setup appropriate alerts.
+to scrape this endpoint. Send 
 
 ## Assumptions
 - The /query endpoint represents what a real RAG system would expose
 - The app runs alongside a Neo4j database and query OpenAI API for text generation
 
-
 ## Improvements
+- Error handling and retry logic for external service integrations (openai and neo4j)
 - Separate requirements.txt instead of docker inline installs
 - Have a shared Secret Kubernetes manifest for different environments
-- Canary deployment for prod environment
-- structured JSON logging to integrate with a centralized log collector.
-- Error handling and retry logic for external service integrations (openai and neo4j)
 - Deployment via CI/CD for different environments
+- Canary deployment for prod environment
+- Structured JSON logging to integrate with a centralized log collector.
+- Grafana dashboards to visualize key metrics
+- Setup alerts when certain thresholds are passed, integrate with Slack, Pagerduty for incident notiications
 
 ## Estimate costs
 

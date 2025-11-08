@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rag-app
+  labels:
+    app: rag-app # match label for Prometheus
 spec:
   replicas: 1 # default
   strategy:
