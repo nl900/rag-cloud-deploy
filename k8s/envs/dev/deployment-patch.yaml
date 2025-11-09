@@ -9,14 +9,14 @@ spec:
       containers:
         - name: rag-app
           image: rag-app:dev-latest
-          imagePullPolicy: Never   # use local image
+          imagePullPolicy: Never   # use local image instead of pulling from registry for local dev
           envFrom:
             - secretRef:
                 name: rag-secrets
           env:
             - name: ENV
               value: "dev"
-          resources:
+          resources: # if not set, Kubernetes won't limit resources
             requests:
               cpu: "100m"
               memory: "128Mi"
