@@ -1,30 +1,32 @@
-FROM python:3.12-slim AS builder
-
-WORKDIR /app
+FROM python:3.12-slim AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+FROM base AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential gcc && \
     rm -rf /var/lib/apt/lists/*
 
-COPY app.py /app/
+COPY requirements.txt .
 
-FROM python:3.12-slim AS runtime
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# non-root user
+COPY . .
+
+FROM base AS runtime
+
 RUN useradd -m -u 1001 appuser
 
-WORKDIR /app
-
+COPY --from=builder /install /usr/local
 COPY --from=builder /app /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+ENV PATH="/usr/local/bin:/install/bin:$PATH"
 
 USER appuser
-
 EXPOSE 8000
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
