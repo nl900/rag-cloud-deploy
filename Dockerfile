@@ -19,6 +19,7 @@ COPY . .
 
 FROM base AS runtime
 
+# non-root user
 RUN useradd -m -u 1001 appuser
 
 COPY --from=builder /install /usr/local
