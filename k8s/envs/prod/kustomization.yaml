@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../common
+  - ../../secrets/aws-secretstore.yaml
+  - ../../secrets/external-secret-prod.yaml
 
 namePrefix: prod-
 
